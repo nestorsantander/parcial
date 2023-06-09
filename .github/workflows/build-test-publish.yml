@@ -1,0 +1,51 @@
+name: Build, Test, and Publish
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Build
+        run: |
+          python setup.py build
+          python setup.py install
+          
+      - name: Run tests
+        run: python -m unittest
+
+      - name: Code inspection
+        run: pylint your_module.py
+
+      - name: Deploy to Render
+        run: render deploy https://api.render.com/deploy/srv-ci1r6867avj2t31f3ii0?key=UWEetu1240I --dockerfile Dockerfile
+        
+      - name: slack - GitHub Actions Slack integration
+        # You may pin to the exact commit or the version.
+        # uses: act10ns/slack@ed1309ab9862e57e9e583e51c7889486b9a00b0f
+        uses: act10ns/slack@v2.0.0
+        with:
+          # Specify Slack Incoming Webhook URL
+          webhook-url: https://hooks.slack.com/services/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 # optional
+          # Specify success, failure, cancelled or a custom status
+          status: ${{ job.status }}
+          # Report on the status of individual steps
+          #steps: # optional
+          # Override default channel with different channel or username
+          #channel: # optional
+          # Override message format for step
+          #message: # optional
