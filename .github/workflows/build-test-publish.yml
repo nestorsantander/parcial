@@ -5,7 +5,7 @@ on:
     branches:
       - main
 jobs:
-  build-test-publish:
+  build-test:
     runs-on: ubuntu-latest
     
     steps:
@@ -30,9 +30,6 @@ jobs:
 
       - name: Code inspection
         run: pylint your_module.py
-
-      - name: Deploy to Render
-        run: render deploy https://api.render.com/deploy/srv-ci1r6867avj2t31f3ii0?key=UWEetu1240I --dockerfile Dockerfile
         
       - name: slack - GitHub Actions Slack integration
         # You may pin to the exact commit or the version.
@@ -49,3 +46,13 @@ jobs:
           #channel: # optional
           # Override message format for step
           #message: # optional
+
+  deploy:
+    name: Deploy
+    needs: [build-test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to Render
+      with:
+        service-id: ${{ secrets.SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_APY_KEY }}
