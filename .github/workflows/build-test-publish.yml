@@ -54,5 +54,4 @@ jobs:
     steps:
     - name: Deploy to Render
       with:
-        service-id: ${{ secrets.SERVICE_ID }}
-        api-key: ${{ secrets.RENDER_APY_KEY }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
