@@ -20,10 +20,10 @@ jobs:
       #- name: Install dependencies
       #  run: pip install -r requirements.txt
       
-      - name: Build
-        run: |
-          python setup.py build
-          python setup.py install
+      #- name: Build
+      #  run: |
+      #    python setup.py build
+      #    python setup.py install
           
       - name: Run tests
         run: python -m unittest
